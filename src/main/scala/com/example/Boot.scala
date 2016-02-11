@@ -3,15 +3,14 @@ package com.example
 import java.util.UUID
 
 import akka.actor._
-import akka.io.IO
-import com.example.ReleaseProtocol.{ReleaseInfo, CreateRelease}
-import com.example.ReleasesProtocol.{ReleasesDto, GetReleases}
-import com.typesafe.config.ConfigFactory
-import spray.can.Http
 import akka.pattern.ask
 import akka.util.Timeout
-import scala.concurrent.duration._
+import com.example.ReleaseProtocol.{CreateRelease, ReleaseInfo}
+import com.example.ReleasesProtocol.{GetReleases, ReleasesDto}
+import com.typesafe.config.ConfigFactory
+
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 
 object Boot extends App {
 
