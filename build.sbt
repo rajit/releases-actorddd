@@ -14,5 +14,3 @@ lazy val `releases-actorddd` = (project in file(".")).
   ).
   dependsOn(RootProject(uri("git://github.com/DrewEaster/actorddd.git#library")))
 //  dependsOn(RootProject(file("../actorddd")))
-
-Revolver.settings
