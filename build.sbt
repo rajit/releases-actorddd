@@ -15,6 +15,7 @@ lazy val `releases-actorddd` = (project in file(".")).
       "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
     ),
     libraryDependencies ++= Seq(
+      "ch.qos.logback" % "logback-classic" % "1.1.3",
       "pl.newicom.dddd" %% "akka-ddd-core" % "1.1.0-SNAPSHOT",
       "pl.newicom.dddd" %% "akka-ddd-messaging" % "1.1.0-SNAPSHOT",
       "pl.newicom.dddd" %% "akka-ddd-monitoring" % "1.1.0-SNAPSHOT",
@@ -22,6 +23,6 @@ lazy val `releases-actorddd` = (project in file(".")).
       "pl.newicom.dddd" %% "eventstore-akka-persistence" % "1.1.0-SNAPSHOT",
       "com.github.tminglei" %% "slick-pg" % "0.10.0" exclude("org.slf4j", "slf4j-simple")
     )
-  ).
-  dependsOn(RootProject(uri("git://github.com/DrewEaster/actorddd.git#library")))
+  )
+//  dependsOn(RootProject(uri("git://github.com/DrewEaster/actorddd.git#library")))
 //  dependsOn(RootProject(file("../actorddd")))

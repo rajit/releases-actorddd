@@ -104,7 +104,7 @@ trait ReleaseBackendConfiguration {
         val port = config.getInt("app.port")
         val localAddress = Try(config.getString("app.host"))
           .toOption.getOrElse(InetAddress.getLocalHost.getHostAddress)
-        List(AddressFromURIString.parse(s"akka.tcp://sales@$localAddress:$port"))
+        List(AddressFromURIString.parse(s"akka.tcp://release@$localAddress:$port"))
     }
   }
 
