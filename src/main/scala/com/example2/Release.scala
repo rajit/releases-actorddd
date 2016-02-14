@@ -10,7 +10,6 @@ import pl.newicom.dddd.eventhandling.EventPublisher
 import pl.newicom.dddd.office.RemoteOfficeId
 import pl.newicom.dddd.office.LocalOfficeId.fromRemoteId
 
-
 object ReleaseStatus extends Enumeration {
   type ReleaseStatus = Value
   val NotDeploying, Deploying = Value
@@ -29,7 +28,6 @@ case class StartDeployment(id: EntityId)
 case class EndDeployment(id: EntityId)
 
 object Release {
-  implicit object ReleaseOfficeId extends RemoteOfficeId("Release")
   implicit val officeId = fromRemoteId[Release](ReleaseOfficeId)
 
   case class State(status: ReleaseStatus, info: ReleaseInfo, deployment: Option[Deployment] = None, createDate: Date = new Date) extends AggregateState[State] {
@@ -45,7 +43,7 @@ object Release {
 abstract class Release(val pc: PassivationConfig) extends AggregateRoot[State, Release] {
   this: EventPublisher =>
 
-  override val factory = {
+  override val factory: AggregateRootFactory = {
     // TODO: Is "new Date" right here? Is the factory used in replays?
     case ReleaseCreated(id, info) =>
       Release.State(ReleaseStatus.NotDeploying, info)
