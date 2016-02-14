@@ -37,7 +37,7 @@ object Release {
       case DeploymentStarted(_, startedDeployment) =>
         copy(status = ReleaseStatus.Deploying, deployment = Some(startedDeployment))
       case DeploymentEnded(_, endedDeployment) =>
-        copy(status = ReleaseStatus.NotDeploying, deployment = Some(endedDeployment))
+        copy(status = ReleaseStatus.NotDeploying, deployment = None)
     }
   }
 }
