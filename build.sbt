@@ -10,7 +10,15 @@ lazy val commonSettings = Seq(
 lazy val `releases-actorddd` = (project in file(".")).
   settings(commonSettings: _*).
   settings(
-    name := "releases-actorddd"
+    name := "releases-actorddd",
+    resolvers ++= Seq(
+      "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+    ),
+    libraryDependencies ++= Seq(
+      "pl.newicom.dddd" %% "akka-ddd-core" % "1.1.0-SNAPSHOT",
+      "pl.newicom.dddd" %% "akka-ddd-messaging" % "1.1.0-SNAPSHOT",
+      "pl.newicom.dddd" %% "eventstore-akka-persistence" % "1.1.0-SNAPSHOT"
+    )
   ).
   dependsOn(RootProject(uri("git://github.com/DrewEaster/actorddd.git#library")))
 //  dependsOn(RootProject(file("../actorddd")))
