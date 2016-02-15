@@ -3,7 +3,10 @@ package com.example2
 import java.net.InetAddress
 
 import akka.actor._
+import akka.japi.Util.immutableSeq
 import akka.cluster.Cluster
+import akka.util.Timeout
+import scala.concurrent.duration._
 import com.typesafe.config.{Config, ConfigFactory}
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
@@ -11,10 +14,12 @@ import pl.newicom.dddd.actor.{CreationSupport, PassivationConfig}
 import pl.newicom.dddd.aggregate.AggregateRootActorFactory
 import pl.newicom.dddd.cluster._
 import pl.newicom.dddd.eventhandling.EventPublisher
+import pl.newicom.dddd.messaging.command.CommandMessage
 import pl.newicom.dddd.messaging.event.OfficeEventMessage
 import pl.newicom.dddd.monitoring.AggregateRootMonitoring
 import pl.newicom.dddd.office.{Office, OfficeFactory}
 import pl.newicom.dddd.persistence.PersistentActorLogging
+import pl.newicom.dddd.writefront.CommandHandler
 import slick.driver.{JdbcProfile, PostgresDriver}
 
 import scala.io.Source
@@ -37,6 +42,11 @@ object Boot extends App with ReleaseBackendConfiguration {
 
   addShutdownHook()
 
+  Thread.sleep(2000)
+
+  val cmdHandler = system.actorOf(Props(classOf[CommandHandlerActor]))
+  cmdHandler ! CreateRelease("1234", ReleaseInfo("Bulky", "v1", Some("asdf"), Some("v1")))
+
   private def addShutdownHook(): Unit = {
     Runtime.getRuntime.addShutdownHook(new Thread(new Runnable {
       override def run(): Unit = {
@@ -49,6 +59,18 @@ object Boot extends App with ReleaseBackendConfiguration {
       }
     }))
   }
+}
+
+class CommandHandlerActor extends Actor with CommandHandler {
+  import context.dispatcher
+  implicit val timeout = new Timeout(2.seconds)
+
+  override def receive = {
+    case cmd: Command => handle(ReleaseOfficeId, CommandMessage(cmd))
+  }
+
+  lazy val contactPoints: Seq[String] = Seq("akka.tcp://DDDSystem@192.168.1.57:2552]")
+//  lazy val contactPoints: Seq[String] = immutableSeq(context.system.settings.config.getStringList("app.backend-contact-points"))
 }
 
 trait LocalPublisher extends EventPublisher {

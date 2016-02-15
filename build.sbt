@@ -19,6 +19,7 @@ lazy val `releases-actorddd` = (project in file(".")).
       "pl.newicom.dddd" %% "akka-ddd-core" % "1.1.0-SNAPSHOT",
       "pl.newicom.dddd" %% "akka-ddd-messaging" % "1.1.0-SNAPSHOT",
       "pl.newicom.dddd" %% "akka-ddd-monitoring" % "1.1.0-SNAPSHOT",
+      "pl.newicom.dddd" %% "akka-ddd-write-front" % "1.1.0-SNAPSHOT",
       "pl.newicom.dddd" %% "view-update-sql" % "1.1.0-SNAPSHOT",
       "pl.newicom.dddd" %% "eventstore-akka-persistence" % "1.1.0-SNAPSHOT",
       "com.github.tminglei" %% "slick-pg" % "0.10.0" exclude("org.slf4j", "slf4j-simple")

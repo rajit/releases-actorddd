@@ -5,6 +5,7 @@ import java.util.Date
 import com.example2.Release.State
 import com.example2.ReleaseStatus.ReleaseStatus
 import pl.newicom.dddd.actor.PassivationConfig
+import pl.newicom.dddd.aggregate
 import pl.newicom.dddd.aggregate.{AggregateState, EntityId, AggregateRoot}
 import pl.newicom.dddd.eventhandling.EventPublisher
 import pl.newicom.dddd.office.RemoteOfficeId
@@ -23,9 +24,14 @@ case class ReleaseCreated(releaseId: EntityId, info: ReleaseInfo)
 case class DeploymentStarted(releaseId: EntityId, deployment: Deployment)
 case class DeploymentEnded(releaseId: EntityId, deployment: Deployment)
 
-case class CreateRelease(id: EntityId, info: ReleaseInfo)
-case class StartDeployment(id: EntityId)
-case class EndDeployment(id: EntityId)
+sealed trait Command extends aggregate.Command {
+  def id: EntityId
+  override def aggregateId = id
+}
+
+case class CreateRelease(id: EntityId, info: ReleaseInfo) extends Command
+case class StartDeployment(id: EntityId) extends Command
+case class EndDeployment(id: EntityId) extends Command
 
 object Release {
   implicit val officeId = fromRemoteId[Release](ReleaseOfficeId)
